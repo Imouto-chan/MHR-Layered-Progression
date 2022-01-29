@@ -156,21 +156,66 @@ local plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager")
 local dataTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
 local dataArmorTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 
-sdk.hook(sdk.find_type_definition("snow.data.SmithyFacility"):get_method("productEquipment(System.Boolean)"), 
+-- Add armor on Init
+sdk.hook(sdk.find_type_definition("snow.data.EquipBox"):get_method("initializeAferLoad"), 
 function(args)
-	log.info("called")
-    --local armorId = sdk.to_managed_object(args[2])
-	--if armorId:get_field("value__") ~= nil then
-	--	log.info(tostring(armorId:get_field("value__")))
-	--end
 end,
 function(retval)
-	log.info(tostring(sdk.to_managed_object(retval):call("isArmor")))
-	--getArmorData
-		--get_Id
+	log.info("called")
+	-- Add Layered Armor already unlocked
+	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
+	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
+	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
+	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 2)) -- Waist Armor
+	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 2)) -- Leg Armor
 	return retval
 end
 )
+
+-- Add armor through smithy
+sdk.hook(sdk.find_type_definition("snow.data.SmithyFacility"):get_method("productEquipment(System.Boolean)"), 
+function(args)
+end,
+function(retval)
+
+	armorData = sdk.to_managed_object(retval)
+	TransmogSet[0] = plOverwearIdList[0]
+	if DEBUG then log.info(tostring(armorData:call("isArmor"))) end
+	
+	if armorData:call("isArmor") then
+		log.info("in here")
+		armorIdData = armorData:call("getArmorData"):call("get_Id")
+		
+		if armorIdData ~= nil then
+			if armorIdData > 206569472 then
+				if DEBUG then log.info("Legs = " .. (armorIdData - 206569472)) end
+				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",armorID_layeredID[(armorIdData - 206569472)])), false)
+			elseif armorIdData > 205520896 then
+				if DEBUG then log.info("Waist = " .. (armorIdData - 205520896)) end
+				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",armorID_layeredID[(armorIdData - 205520896)])), false)
+			elseif armorIdData > 204472320 then
+				if DEBUG then log.info("Arms = " .. (armorIdData - 204472320)) end
+				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",armorID_layeredID[(armorIdData - 204472320)])), false)
+			elseif armorIdData > 203423744 then
+				if DEBUG then log.info("Chest = " .. (armorIdData - 203423744)) end
+				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
+			elseif armorIdData > 202375168 then
+				if DEBUG then log.info("Head = " .. (armorIdData - 202375168)) end
+				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",armorID_layeredID[(armorIdData - 202375168)])), false)
+			end
+		end
+	end
+	
+	return retval
+end
+)
+
+-- Base:
+-- head: 202375168
+-- chest: 203423744
+-- arm: 204472320
+-- waist: 205520896
+-- leg: 206569472
 
 re.on_draw_ui(function()
 
