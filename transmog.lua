@@ -1,11 +1,8 @@
-local thing = 1
-local things = { "hi", "hello", "howdy", "hola", "aloha" }
-
-local DEBUG = true
-
-local head1 = 100
+local DEBUG = false
+local DEBUG_RESET = false
 local TransmogSet = {}
 local armorID_layeredID = {}
+
 armorID_layeredID[0] = 1 -- Kamura
 armorID_layeredID[1] = 1 -- Kamura
 armorID_layeredID[2] = 2 -- Leather
@@ -85,12 +82,18 @@ armorID_layeredID[75] = 42 -- Slagtoth
 armorID_layeredID[76] = 42 -- Slagtoth
 armorID_layeredID[77] = 43 -- Rhenoplos
 armorID_layeredID[78] = 43 -- Rhenoplos
+armorID_layeredID[79] = 44 -- Jaggi
+armorID_layeredID[80] = 44 -- Jaggi
 armorID_layeredID[81] = 45 -- Bnahabra
 armorID_layeredID[82] = 45 -- Bnahabra
 armorID_layeredID[83] = 46 -- Bullfango
 armorID_layeredID[84] = 46 -- Bullfango
 armorID_layeredID[85] = 47 -- Remobra
 armorID_layeredID[86] = 47 -- Remobra
+armorID_layeredID[87] = 48 -- Droth 
+armorID_layeredID[88] = 48 -- Droth 
+armorID_layeredID[89] = 49 -- Uroktor 
+armorID_layeredID[90] = 49 -- Uroktor 
 armorID_layeredID[91] = 50 -- Wroggi
 armorID_layeredID[92] = 50 -- Wroggi
 armorID_layeredID[93] = 51 -- Baggi
@@ -133,10 +136,11 @@ armorID_layeredID[129] = 70 -- Kadachi
 armorID_layeredID[130] = 71 -- Anjanath
 armorID_layeredID[131] = 71 -- Anjanath
 armorID_layeredID[132] = 72 -- Bazelgeuse
+armorID_layeredID[133] = 73 -- Chrome Metal
 armorID_layeredID[134] = 74 -- Skull
 armorID_layeredID[135] = 75 -- Flame
 armorID_layeredID[137] = 77 -- Shadow
-armorID_layeredID[138] = 78 -- Jaggi
+armorID_layeredID[138] = 78 -- Jaggi Mask
 armorID_layeredID[139] = 78 -- Jaggi
 armorID_layeredID[140] = 79 -- Cunning
 armorID_layeredID[141] = 80 -- Mighty
@@ -157,17 +161,18 @@ local dataTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_
 local dataArmorTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 
 -- Add armor on Init
-sdk.hook(sdk.find_type_definition("snow.data.EquipBox"):get_method("initializeAferLoad"), 
+sdk.hook(sdk.find_type_definition("snow.data.PlOverwearBox"):get_method("load"), 
 function(args)
 end,
 function(retval)
-	log.info("called")
+	local armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
+	
 	-- Add Layered Armor already unlocked
 	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
 	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
 	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
-	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 2)) -- Waist Armor
-	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 2)) -- Leg Armor
+	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3)) -- Waist Armor
+	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4)) -- Leg Armor
 	return retval
 end
 )
@@ -178,28 +183,27 @@ function(args)
 end,
 function(retval)
 
-	armorData = sdk.to_managed_object(retval)
+	local armorData = sdk.to_managed_object(retval)
 	TransmogSet[0] = plOverwearIdList[0]
 	if DEBUG then log.info(tostring(armorData:call("isArmor"))) end
 	
 	if armorData:call("isArmor") then
-		log.info("in here")
-		armorIdData = armorData:call("getArmorData"):call("get_Id")
+		local armorIdData = armorData:call("getArmorData"):call("get_Id")
 		
 		if armorIdData ~= nil then
-			if armorIdData > 206569472 then
+			if armorIdData >= 206569472 then
 				if DEBUG then log.info("Legs = " .. (armorIdData - 206569472)) end
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",armorID_layeredID[(armorIdData - 206569472)])), false)
-			elseif armorIdData > 205520896 then
+			elseif armorIdData >= 205520896 then
 				if DEBUG then log.info("Waist = " .. (armorIdData - 205520896)) end
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",armorID_layeredID[(armorIdData - 205520896)])), false)
-			elseif armorIdData > 204472320 then
+			elseif armorIdData >= 204472320 then
 				if DEBUG then log.info("Arms = " .. (armorIdData - 204472320)) end
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",armorID_layeredID[(armorIdData - 204472320)])), false)
-			elseif armorIdData > 203423744 then
+			elseif armorIdData >= 203423744 then
 				if DEBUG then log.info("Chest = " .. (armorIdData - 203423744)) end
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
-			elseif armorIdData > 202375168 then
+			elseif armorIdData >= 202375168 then
 				if DEBUG then log.info("Head = " .. (armorIdData - 202375168)) end
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",armorID_layeredID[(armorIdData - 202375168)])), false)
 			end
@@ -219,46 +223,48 @@ end
 
 re.on_draw_ui(function()
 
-	imgui.text("Transmog:")
-	
-    if imgui.button("Transmog") then 
-		log.info("pushed")
-		TransmogSet[0] = plOverwearIdList[0]
-		armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
+	if DEBUG then
+		imgui.text("Transmog:")
 		
-		if armorList ~= nil then
-			UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
-			UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
-			UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
-			UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 2)) -- Waist Armor
-			UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 2)) -- Leg Armor
+		if imgui.button("Transmog") then 
+			log.info("pushed")
+			TransmogSet[0] = plOverwearIdList[0]
+			local armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
 			
-		else
-			log.info("[Transmog] armorList is nil")
-		end
-    end
-	
-	if imgui.button("Unlock All Layered Armor") then
-		log.info("[Transmog] Unlock All")
-		TransmogSet[0] = plOverwearIdList[0]
-		-- Unlock all
-		-- 127 all
-		-- 86 non-dlc (not 76,77,79)
-		for i=80, 86 do
-			if i ~= 76 and i ~= 77 and i ~= 79 then  
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",i)), false)
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",i)), false)
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",i)), false)
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",i)), false)
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",i)), false)
+			if armorList ~= nil then
+				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
+				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
+				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
+				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3)) -- Waist Armor
+				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4)) -- Leg Armor
+				
+			else
+				log.info("[Transmog] armorList is nil")
 			end
 		end
-    end
-	
-	if DEBUG then
-		if imgui.button("Reset All Layered Armor") then
-			log.info("[Transmog] Reset All")
-			dataTest:call("reset()")
+		
+		if imgui.button("Unlock All Layered Armor") then
+			log.info("[Transmog] Unlock All")
+			TransmogSet[0] = plOverwearIdList[0]
+			-- Unlock all
+			-- 127 all
+			-- 86 non-dlc (not 76,77,79)
+			for i=80, 86 do
+				if i ~= 76 and i ~= 77 and i ~= 79 then  
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",i)), false)
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",i)), false)
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",i)), false)
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",i)), false)
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",i)), false)
+				end
+			end
+		end
+		
+		if DEBUG_RESET then
+			if imgui.button("Reset All Layered Armor") then
+				log.info("[Transmog] Reset All")
+				dataTest:call("reset()")
+			end
 		end
 		
 		if plOverwearIdList ~= nil then
@@ -278,12 +284,13 @@ re.on_draw_ui(function()
 end)
 
 function UnlockArmor(slot, armorList)
-	if armorList ~= nil then -- Head Armor
+	if armorList ~= nil then
 		for i=0, 153 do
-			item1 = armorList:call("get_Item(System.Int32)", i)
+			if DEBUG then  log.info(slot .. " = " .. i) end
+			local item1 = armorList:call("get_Item(System.Int32)", i)
 			
 			if item1 ~= nil then
-				amount = item1:get_field("mSize")
+				local amount = item1:get_field("mSize")
 				
 				if amount >= 1 then
 					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_" .. slot .. "_" .. string.format("%03d",armorID_layeredID[i])), false)
