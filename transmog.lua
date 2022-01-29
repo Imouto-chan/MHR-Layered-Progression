@@ -156,16 +156,16 @@ armorID_layeredID[150] = 85 -- Brigade
 armorID_layeredID[152] = 74 -- Skull
 armorID_layeredID[153] = 85 -- Brigade
 
-local plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
-local dataTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
-local dataArmorTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 
--- Add armor on Init
+-- Add armor on Init and load required fields
 sdk.hook(sdk.find_type_definition("snow.data.PlOverwearBox"):get_method("load"), 
 function(args)
+	plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
+	plOverwearBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
+	plEquipBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 end,
 function(retval)
-	local armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
+	local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
 	
 	-- Add Layered Armor already unlocked
 	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
@@ -193,19 +193,19 @@ function(retval)
 		if armorIdData ~= nil then
 			if armorIdData >= 206569472 then
 				if DEBUG then log.info("Legs = " .. (armorIdData - 206569472)) end
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",armorID_layeredID[(armorIdData - 206569472)])), false)
+				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",armorID_layeredID[(armorIdData - 206569472)])), false)
 			elseif armorIdData >= 205520896 then
 				if DEBUG then log.info("Waist = " .. (armorIdData - 205520896)) end
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",armorID_layeredID[(armorIdData - 205520896)])), false)
+				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",armorID_layeredID[(armorIdData - 205520896)])), false)
 			elseif armorIdData >= 204472320 then
 				if DEBUG then log.info("Arms = " .. (armorIdData - 204472320)) end
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",armorID_layeredID[(armorIdData - 204472320)])), false)
+				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",armorID_layeredID[(armorIdData - 204472320)])), false)
 			elseif armorIdData >= 203423744 then
 				if DEBUG then log.info("Chest = " .. (armorIdData - 203423744)) end
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
+				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
 			elseif armorIdData >= 202375168 then
 				if DEBUG then log.info("Head = " .. (armorIdData - 202375168)) end
-				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",armorID_layeredID[(armorIdData - 202375168)])), false)
+				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",armorID_layeredID[(armorIdData - 202375168)])), false)
 			end
 		end
 	end
@@ -229,7 +229,7 @@ re.on_draw_ui(function()
 		if imgui.button("Transmog") then 
 			log.info("pushed")
 			TransmogSet[0] = plOverwearIdList[0]
-			local armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
+			local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
 			
 			if armorList ~= nil then
 				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
@@ -251,11 +251,11 @@ re.on_draw_ui(function()
 			-- 86 non-dlc (not 76,77,79)
 			for i=80, 86 do
 				if i ~= 76 and i ~= 77 and i ~= 79 then  
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",i)), false)
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",i)), false)
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",i)), false)
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",i)), false)
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",i)), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",i)), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",i)), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",i)), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",i)), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",i)), false)
 				end
 			end
 		end
@@ -263,7 +263,7 @@ re.on_draw_ui(function()
 		if DEBUG_RESET then
 			if imgui.button("Reset All Layered Armor") then
 				log.info("[Transmog] Reset All")
-				dataTest:call("reset()")
+				plOverwearBox:call("reset()")
 			end
 		end
 		
@@ -293,7 +293,7 @@ function UnlockArmor(slot, armorList)
 				local amount = item1:get_field("mSize")
 				
 				if amount >= 1 then
-					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_" .. slot .. "_" .. string.format("%03d",armorID_layeredID[i])), false)
+					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_" .. slot .. "_" .. string.format("%03d",armorID_layeredID[i])), false)
 				end
 			else
 				log.info("[Transmog] " .. slot .. " " .. tostring(i) .. " item1 is nil")
