@@ -156,7 +156,7 @@ local plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager")
 local dataTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
 local dataArmorTest = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 
-sdk.hook(sdk.find_type_definition("snow.data.EquipBox"):get_method("changeEquipment"), 
+sdk.hook(sdk.find_type_definition("snow.data.SmithyFacility"):get_method("productEquipment(System.Boolean)"), 
 function(args)
 	log.info("called")
     --local armorId = sdk.to_managed_object(args[2])
@@ -165,41 +165,31 @@ function(args)
 	--end
 end,
 function(retval)
-	return retval;
+	log.info(tostring(sdk.to_managed_object(retval):call("isArmor")))
+	--getArmorData
+		--get_Id
+	return retval
 end
 )
 
 re.on_draw_ui(function()
+
 	imgui.text("Transmog:")
+	
     if imgui.button("Transmog") then 
-        --imgui.begin_child_window(100, true)
 		log.info("pushed")
-		--TransmogSet[0] = plOverwearIdList[0]
-		--sdk.get_managed_singleton("snow.data.EquipDataManager"):call("equipPlOverwear", TransmogSet[0]:get_field("Overwear_Head_105"))
-		--dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_002"), false)
-		
-		--armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
-		--if armorList ~= nil then
-		--	log.info("not nil")
-		--	log.info(tostring(armorList[0][0]:get_field("mSize")))
-		--end
+		TransmogSet[0] = plOverwearIdList[0]
 		armorList = dataArmorTest:get_field("<EquipBoxArmorData>k__BackingField")
+		
 		if armorList ~= nil then
-			--log.info("not nil = " .. tostring(armorList:call("get_Item()", 0):call("get_Count()")))
-			log.info("not nil")
-			armorArray = armorList:call("get_Item(System.Int32)", 0)
-			if armorArray ~= nil then
-				log.info("not nil2 = " .. armorArray:call("get_Count()"))
-				for i=0, 153 do
-					item1 = armorArray:call("get_Item(System.Int32)", i)
-					if item1 ~= nil then
-						amount = item1:get_field("mSize")
-						if amount >= 1 then
-							log.info("not nil3 = " .. amount .. "  i = " .. i)
-						end
-					end
-				end
-			end
+			UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
+			UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
+			UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
+			UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 2)) -- Waist Armor
+			UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 2)) -- Leg Armor
+			
+		else
+			log.info("[Transmog] armorList is nil")
 		end
     end
 	
@@ -216,7 +206,6 @@ re.on_draw_ui(function()
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",i)), false)
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",i)), false)
 				dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",i)), false)
-				--log.info("Overwear_Head_" .. string.format("%03d",i))
 			end
 		end
     end
@@ -226,39 +215,43 @@ re.on_draw_ui(function()
 			log.info("[Transmog] Reset All")
 			dataTest:call("reset()")
 		end
-	
-		if dataTest ~= nil then
-			--log.info("91 " .. tostring(dataTest:call("hasPlOverwear", 91)))
-			--dataTest:call("addPlOverwear",2,true)
-		end
 		
 		if plOverwearIdList ~= nil then
-			--TransmogSet["Head"] = plOverwearIdList[0]:get_field("value__")
 			TransmogSet[0] = plOverwearIdList[0]
 			TransmogSet[1] = plOverwearIdList[1]
 			TransmogSet[2] = plOverwearIdList[2]
 			TransmogSet[3] = plOverwearIdList[3]
 			TransmogSet[4] = plOverwearIdList[4]
-			
-			--TransmogSet[0]:set_field("value__", TransmogSet[0]:get_field("Overwear_Head_105"))
-			
-			--sdk.get_managed_singleton("snow.data.EquipDataManager"):call("equipPlOverwear", TransmogSet[0]:get_field("Overwear_Head_105"))
-			
-			Int_Drag(0, 0, 127)
-			Int_Drag(1, 4096, 4223)
-			Int_Drag(2, 8192, 8319)
-			Int_Drag(3, 12288, 12415)
-			Int_Drag(4, 16384, 16511)
+
+			Int_Drag(0, 0)
+			Int_Drag(1, 4096)
+			Int_Drag(2, 8192)
+			Int_Drag(3, 12288)
+			Int_Drag(4, 16384)
 		end
 	end
-
-    local changed, new_thing = imgui.combo("Greeting", thing, things) 
-    if changed then thing = new_thing end
 end)
 
-function Int_Drag(slot, minNum, maxNum)
-	local changed, value = imgui.drag_int(slot, TransmogSet[slot]:get_field("value__") - minNum, 1, 0, 127)
-	if changed then
-		--TransmogSet[slot]:set_field("value__", value)
+function UnlockArmor(slot, armorList)
+	if armorList ~= nil then -- Head Armor
+		for i=0, 153 do
+			item1 = armorList:call("get_Item(System.Int32)", i)
+			
+			if item1 ~= nil then
+				amount = item1:get_field("mSize")
+				
+				if amount >= 1 then
+					dataTest:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_" .. slot .. "_" .. string.format("%03d",armorID_layeredID[i])), false)
+				end
+			else
+				log.info("[Transmog] " .. slot .. " " .. tostring(i) .. " item1 is nil")
+			end
+		end
+	else
+		log.info("[Transmog] " .. slot .. " ArmorList is nil")
 	end
+end
+
+function Int_Drag(slot, minNum)
+	local changed, value = imgui.drag_int(slot, TransmogSet[slot]:get_field("value__") - minNum, 1, 0, 127)
 end
