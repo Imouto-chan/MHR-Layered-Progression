@@ -1,5 +1,5 @@
-local DEBUG = false
-local DEBUG_RESET = false
+local DEBUG = true
+local DEBUG_RESET = true
 local TransmogSet = {}
 local armorID_layeredID = {}
 
@@ -156,6 +156,10 @@ armorID_layeredID[150] = 85 -- Brigade
 armorID_layeredID[152] = 74 -- Skull
 armorID_layeredID[153] = 85 -- Brigade
 
+local plOverwearIdList = nil
+local plOverwearBox = nil
+local plEquipBox = nil
+
 
 -- Add armor on Init and load required fields
 sdk.hook(sdk.find_type_definition("snow.data.PlOverwearBox"):get_method("load"), 
@@ -163,6 +167,7 @@ function(args)
 	plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
 	plOverwearBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
 	plEquipBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
+	TransmogSet[0] = plOverwearIdList[0]
 end,
 function(retval)
 	local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
@@ -184,7 +189,6 @@ end,
 function(retval)
 
 	local armorData = sdk.to_managed_object(retval)
-	TransmogSet[0] = plOverwearIdList[0]
 	if DEBUG then log.info(tostring(armorData:call("isArmor"))) end
 	
 	if armorData:call("isArmor") then
