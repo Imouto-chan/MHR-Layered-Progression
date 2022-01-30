@@ -1,5 +1,5 @@
-local DEBUG = true
-local DEBUG_RESET = true
+local DEBUG = false
+local DEBUG_RESET = false
 local TransmogSet = {}
 local armorID_layeredID = {}
 
@@ -187,7 +187,9 @@ sdk.hook(sdk.find_type_definition("snow.data.SmithyFacility"):get_method("produc
 function(args)
 end,
 function(retval)
-
+	plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
+	plOverwearBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
+	TransmogSet[0] = plOverwearIdList[0]
 	local armorData = sdk.to_managed_object(retval)
 	if DEBUG then log.info(tostring(armorData:call("isArmor"))) end
 	
