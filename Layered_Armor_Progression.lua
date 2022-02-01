@@ -23,16 +23,16 @@ armorID_layeredID[16] = 10 -- Makluva
 armorID_layeredID[17] = 10 -- Makluva
 armorID_layeredID[18] = 11 -- Death
 armorID_layeredID[19] = 11 -- Death
-armorID_layeredID[20] = 12 -- Mosgharl
-armorID_layeredID[21] = 12 -- Mosgharl
-armorID_layeredID[22] = 12 -- Mosgharl
-armorID_layeredID[23] = 12 -- Mosgharl
-armorID_layeredID[24] = 13 -- Aelucanth
-armorID_layeredID[25] = 13 -- Aelucanth
-armorID_layeredID[26] = 14 -- Rhopessa
-armorID_layeredID[27] = 14 -- Rhopessa
-armorID_layeredID[28] = 15 -- Vaik
-armorID_layeredID[29] = 15 -- Vaik
+armorID_layeredID[20] = 13 -- Mosgharl
+armorID_layeredID[21] = 13 -- Mosgharl
+armorID_layeredID[22] = 13 -- Mosgharl
+armorID_layeredID[23] = 13 -- Mosgharl
+armorID_layeredID[24] = 14 -- Aelucanth
+armorID_layeredID[25] = 14 -- Aelucanth
+armorID_layeredID[26] = 15 -- Rhopessa
+armorID_layeredID[27] = 15 -- Rhopessa
+armorID_layeredID[28] = 16 -- Vaik
+armorID_layeredID[29] = 16 -- Vaik
 armorID_layeredID[30] = 17 -- Chaoshroom
 armorID_layeredID[31] = 17 -- Chaos
 armorID_layeredID[32] = 18 -- Edel
@@ -234,6 +234,9 @@ re.on_draw_ui(function()
 		
 		if imgui.button("Transmog") then 
 			log.info("[Transmog] Transmog")
+			plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
+			plOverwearBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
+			plEquipBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlEquipBox")
 			TransmogSet[0] = plOverwearIdList[0]
 			local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
 			
@@ -251,6 +254,8 @@ re.on_draw_ui(function()
 		
 		if imgui.button("Unlock All Layered Armor") then
 			log.info("[Transmog] Unlock All")
+			plOverwearIdList = sdk.get_managed_singleton("snow.data.EquipDataManager"):get_field("_PlOverwearMySetData"):get_field("_PlOverwearIdList")
+			plOverwearBox = sdk.get_managed_singleton("snow.data.DataManager"):get_field("_PlOverwearBox")
 			TransmogSet[0] = plOverwearIdList[0]
 			-- Unlock all
 			-- 127 all
