@@ -156,7 +156,7 @@ armorID_layeredID[150] = 85 -- Brigade
 armorID_layeredID[152] = 74 -- Skull
 armorID_layeredID[153] = 85 -- Brigade
 
--- Credit to BobaPearl @ NexusMods for Sunbreak IDs (https://www.nexusmods.com/users/98730653)
+-- Credit to BobaPearl @ NexusMods for Sunbreak IDs https://www.nexusmods.com/users/98730653
 -- Sunbreak:
 armorID_layeredID[300] = 1 -- Kamura
 armorID_layeredID[301] = 2 -- Leather
@@ -304,11 +304,16 @@ function(retval)
 	local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
 	
 	-- Add Layered Armor already unlocked
-	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
-	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
-	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
-	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3)) -- Waist Armor
-	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4)) -- Leg Armor
+	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 0, 153) -- Head Armor
+	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 456) -- Head Armor SB
+	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 0, 153) -- Chest Armor
+	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 456) -- Chest Armor SB
+	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 0, 153) -- Arm Armor
+	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 456) -- Arm Armor SB
+	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 0, 153) -- Waist Armor
+	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 456) -- Waist Armor SB
+	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 0, 153) -- Leg Armor
+	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 456) -- Leg Armor SB
 	return retval
 end
 )
@@ -328,16 +333,16 @@ function(retval)
 		local armorIdData = armorData:call("getArmorData"):call("get_Id")
 		
 		if armorIdData ~= nil then
-			if armorIdData >= 206569472 then -- Leg
+			if armorIdData >= 206569472 and (armorIdData - 206569472) ~= 358 then -- Leg
 				if DEBUG then log.info("Legs = " .. (armorIdData - 206569472)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Leg_" .. string.format("%03d",armorID_layeredID[(armorIdData - 206569472)])), false)
-			elseif armorIdData >= 205520896 then -- Waist
+			elseif armorIdData >= 205520896 and (armorIdData - 205520896) ~= 358 then -- Waist
 				if DEBUG then log.info("Waist = " .. (armorIdData - 205520896)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Waist_" .. string.format("%03d",armorID_layeredID[(armorIdData - 205520896)])), false)
-			elseif armorIdData >= 204472320 then -- Arms
+			elseif armorIdData >= 204472320 and (armorIdData - 204472320) ~= 358 then -- Arms
 				if DEBUG then log.info("Arms = " .. (armorIdData - 204472320)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Arm_" .. string.format("%03d",armorID_layeredID[(armorIdData - 204472320)])), false)
-			elseif armorIdData >= 203423744 then -- Chest
+			elseif armorIdData >= 203423744 and (armorIdData - 203423744) ~= 358 then -- Chest
 				if DEBUG then log.info("Chest = " .. (armorIdData - 203423744)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
 			elseif armorIdData >= 202375168 then -- Head
@@ -372,11 +377,16 @@ re.on_draw_ui(function()
 			local armorList = plEquipBox:get_field("<EquipBoxArmorData>k__BackingField")
 			
 			if armorList ~= nil then
-				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0)) -- Head Armor
-				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1)) -- Chest Armor
-				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2)) -- Arm Armor
-				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3)) -- Waist Armor
-				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4)) -- Leg Armor
+				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 0, 153) -- Head Armor
+				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 456) -- Head Armor SB
+				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 0, 153) -- Chest Armor
+				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 456) -- Chest Armor SB
+				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 0, 153) -- Arm Armor
+				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 456) -- Arm Armor SB
+				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 0, 153) -- Waist Armor SB
+				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 456) -- Waist Armor SB
+				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 0, 153) -- Leg Armor
+				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 456) -- Leg Armor SB
 				
 			else
 				log.info("[Transmog] armorList is nil")
@@ -426,16 +436,16 @@ re.on_draw_ui(function()
 	end
 end)
 
-function UnlockArmor(slot, armorList)
+function UnlockArmor(slot, armorList, rangeMin, rangeMax)
 	if armorList ~= nil then
-		for i=0, 153 do -- Go through each armor piece in the list
+		for i=rangeMin, rangeMax do -- Go through each armor piece in the list
 			if DEBUG then  log.info(slot .. " = " .. i) end
 			local item1 = armorList:call("get_Item(System.Int32)", i)
 			
 			if item1 ~= nil then
 				local amount = item1:get_field("mSize")
 				
-				if amount >= 1 then -- Check to see if more than 0 of the armor piece is owned
+				if amount >= 1 and not(i == 358 and slot ~= "Head") then -- Check to see if more than 0 of the armor piece is owned
 					plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_" .. slot .. "_" .. string.format("%03d",armorID_layeredID[i])), false)
 				end
 			else
