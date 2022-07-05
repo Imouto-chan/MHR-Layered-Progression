@@ -345,7 +345,7 @@ function(retval)
 			elseif armorIdData >= 203423744 and (armorIdData - 203423744) ~= 358 and armorID_layeredID[(armorIdData - 203423744)] ~= nil then -- Chest
 				if DEBUG then log.info("Chest = " .. (armorIdData - 203423744)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Chest_" .. string.format("%03d",armorID_layeredID[(armorIdData - 203423744)])), false)
-			elseif armorIdData >= 202375168 then and armorID_layeredID[(armorIdData - 202375168)] ~= nil -- Head
+			elseif armorIdData >= 202375168 and armorID_layeredID[(armorIdData - 202375168)] ~= nil then -- Head
 				if DEBUG then log.info("Head = " .. (armorIdData - 202375168)) end
 				plOverwearBox:call("addPlOverwear", TransmogSet[0]:get_field("Overwear_Head_" .. string.format("%03d",armorID_layeredID[(armorIdData - 202375168)])), false)
 			end
