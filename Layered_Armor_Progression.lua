@@ -156,7 +156,7 @@ armorID_layeredID[150] = 85 -- Brigade
 armorID_layeredID[152] = 74 -- Skull
 armorID_layeredID[153] = 85 -- Brigade
 
--- Credit to BobaPearl @ NexusMods for Sunbreak IDs https://www.nexusmods.com/users/98730653
+-- Credit to Synthlight and BobaPearl @ NexusMods for Sunbreak IDs https://www.nexusmods.com/monsterhunterrise/users/723349 https://www.nexusmods.com/users/98730653
 -- Sunbreak:
 armorID_layeredID[300] = 1 -- Kamura
 armorID_layeredID[301] = 2 -- Leather
