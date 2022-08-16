@@ -1,5 +1,5 @@
-local DEBUG = false
-local DEBUG_RESET = false
+local DEBUG = true
+local DEBUG_RESET = true
 local TransmogSet = {}
 local armorID_layeredID = {}
 
@@ -252,6 +252,7 @@ armorID_layeredID[397] = 247 -- Auroracanth
 armorID_layeredID[398] = 248 -- Pyre-Kadaki
 armorID_layeredID[399] = 249 -- Pyre-Kadaki
 armorID_layeredID[400] = 250 -- Magmadron
+armorID_layeredID[401] = 251 -- Pride
 armorID_layeredID[402] = 252 -- Malzeno
 armorID_layeredID[403] = 253 -- Lunagaron
 armorID_layeredID[404] = 254 -- Garangolm
@@ -278,7 +279,11 @@ armorID_layeredID[424] = 286 -- Five Element
 armorID_layeredID[425] = 287 -- Guardian
 armorID_layeredID[426] = 288 -- Guild Palace
 armorID_layeredID[427] = 289 -- Yukumo Sky
+armorID_layeredID[428] = 290 -- Silver Sol
+armorID_layeredID[429] = 291 -- Golden Lune
+armorID_layeredID[431] = 293 -- Lucent Narga
 armorID_layeredID[432] = 260 -- Azure
+armorID_layeredID[434] = 262 -- Lien
 armorID_layeredID[441] = 269 -- Heavy Knight
 armorID_layeredID[442] = 270 -- Knight Squire
 armorID_layeredID[443] = 271 -- Royal Artillery Corps
