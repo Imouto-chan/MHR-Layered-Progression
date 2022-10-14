@@ -1,5 +1,5 @@
-local DEBUG = true
-local DEBUG_RESET = true
+local DEBUG = false
+local DEBUG_RESET = false
 local TransmogSet = {}
 local armorID_layeredID = {}
 
@@ -292,6 +292,15 @@ armorID_layeredID[445] = 295 -- Monksnail Hat
 armorID_layeredID[446] = 296 -- Ethereal Diadem
 armorID_layeredID[456] = 306 -- Dignified
 
+-- TU2 - 12.0.0.0
+armorID_layeredID[430] = 292 -- Flaming Espinas
+armorID_layeredID[482] = 190 -- Clockwork
+armorID_layeredID[483] = 191 -- Elfin Crown
+armorID_layeredID[484] = 192 -- Monocle of Clarity
+armorID_layeredID[491] = 199 -- Risen Mizuha
+armorID_layeredID[394] = 244 -- Onmyo
+
+
 local plOverwearIdList = nil
 local plOverwearBox = nil
 local plEquipBox = nil
@@ -310,15 +319,15 @@ function(retval)
 	
 	-- Add Layered Armor already unlocked
 	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 0, 153) -- Head Armor
-	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 456) -- Head Armor SB
+	UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 491) -- Head Armor SB
 	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 0, 153) -- Chest Armor
-	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 456) -- Chest Armor SB
+	UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 491) -- Chest Armor SB
 	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 0, 153) -- Arm Armor
-	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 456) -- Arm Armor SB
+	UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 491) -- Arm Armor SB
 	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 0, 153) -- Waist Armor
-	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 456) -- Waist Armor SB
+	UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 491) -- Waist Armor SB
 	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 0, 153) -- Leg Armor
-	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 456) -- Leg Armor SB
+	UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 491) -- Leg Armor SB
 	return retval
 end
 )
@@ -383,15 +392,15 @@ re.on_draw_ui(function()
 			
 			if armorList ~= nil then
 				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 0, 153) -- Head Armor
-				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 456) -- Head Armor SB
+				UnlockArmor("Head", armorList:call("get_Item(System.Int32)", 0), 300, 491) -- Head Armor SB
 				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 0, 153) -- Chest Armor
-				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 456) -- Chest Armor SB
+				UnlockArmor("Chest", armorList:call("get_Item(System.Int32)", 1), 300, 491) -- Chest Armor SB
 				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 0, 153) -- Arm Armor
-				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 456) -- Arm Armor SB
+				UnlockArmor("Arm", armorList:call("get_Item(System.Int32)", 2), 300, 491) -- Arm Armor SB
 				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 0, 153) -- Waist Armor SB
-				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 456) -- Waist Armor SB
+				UnlockArmor("Waist", armorList:call("get_Item(System.Int32)", 3), 300, 491) -- Waist Armor SB
 				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 0, 153) -- Leg Armor
-				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 456) -- Leg Armor SB
+				UnlockArmor("Leg", armorList:call("get_Item(System.Int32)", 4), 300, 491) -- Leg Armor SB
 				
 			else
 				log.info("[Transmog] armorList is nil")
