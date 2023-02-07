@@ -300,6 +300,27 @@ armorID_layeredID[484] = 192 -- Monocle of Clarity
 armorID_layeredID[491] = 199 -- Risen Mizuha
 armorID_layeredID[394] = 244 -- Onmyo
 
+-- TU3 - 13.0.0.0
+armorID_layeredID[494] = 188 -- Chaotic 
+armorID_layeredID[495] = 189 -- Nephilim 
+armorID_layeredID[492] = 186 -- Risen Kushala
+armorID_layeredID[493] = 187 -- Risen Kaiser
+armorID_layeredID[485] = 193 -- Artian
+armorID_layeredID[486] = 194 -- Black Wing Earrings
+armorID_layeredID[487] = 195 -- Palamask 
+armorID_layeredID[433] = 261 -- Shui 
+armorID_layeredID[438] = 266 -- Dusk 
+
+-- TU4 - 14.0.0.0
+armorID_layeredID[461] = 308 -- Elgado
+armorID_layeredID[498] = 179 -- Rimeguard
+armorID_layeredID[499] = 180 -- Valstrax Epoch 
+armorID_layeredID[488] = 196 -- Snowy Cohoot
+armorID_layeredID[453] = 303 -- Face Scarf
+armorID_layeredID[437] = 265 -- Marine
+armorID_layeredID[436] = 264 -- Reflet
+armorID_layeredID[435] = 263 -- Lennigan
+
 
 local plOverwearIdList = nil
 local plOverwearBox = nil
